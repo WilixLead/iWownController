@@ -1,0 +1,37 @@
+<resources>
+    <string name="title_activity_device_settings">Device Settings</string>
+    <!--<string name="pref_header_general">General</string>-->
+
+    <string name="pref_device_body_goal">Ваша цель</string>
+    <string name="pref_device_body_goal_default">1000</string>
+
+    <string name="pref_device_body_weight">Ваш вес</string>
+    <string name="pref_device_body_weight_default">70</string>
+
+    <string name="pref_device_body_height">Ваш рост</string>
+    <string name="pref_device_body_height_default">180</string>
+
+    <string name="pref_device_body_age">Ваш возраст</string>
+    <string name="pref_device_body_age_default">26</string>
+
+    <string name="pref_device_body_gender">Указать пол</string>
+    <string-array name="pref_device_body_gender_titles">
+        <item>Мужик</item>
+        <item>Женщина</item>
+    </string-array>
+    <string-array name="pref_device_body_gender_values">
+        <item>false</item>
+        <item>true</item>
+    </string-array>
+
+    <string name="pref_device_gesture">Разрешить жесты</string>
+    <string name="pref_device_gesture_desc">Показывать время когда Вы смотрите на браслет как на часы</string>
+
+    <string name="pref_device_auto_sleep">Автосон</string>
+    <string name="pref_device_light">Мигать синим светодиодом</string>
+    <string name="pref_device_use24hours">Время в 24 формате</string>
+    <string name="pref_device_english_units">Использовать английскую систему</string>
+
+    <string name="pref_device_ble">Включить BLE</string>
+    <string name="pref_device_ble_desc">Неизвестный параметр. Использовать на свой страх и риск</string>
+</resources>

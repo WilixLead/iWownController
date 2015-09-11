@@ -1,0 +1,292 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="154dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Устройство"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/connectBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_alignStart="@+id/label_device_sw"
+                    android:layout_below="@+id/textView4"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Подключиться"
+                    android:textSize="12dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="Модель:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8" />
+
+                    <TextView
+                        android:id="@+id/label_device_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView2"
+                        android:text="Неизвестно"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/label_device_model"
+                        android:text="Прошивка:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8" />
+
+                    <TextView
+                        android:id="@+id/label_device_sw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_device_model"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView3"
+                        android:text="Неизвестно"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView3"
+                        android:text="Время устройства:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8" />
+
+                    <TextView
+                        android:id="@+id/label_device_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_device_sw"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView7"
+                        android:text="Неизвестно"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView7"
+                        android:text="Уровень заряда:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8" />
+
+                    <TextView
+                        android:id="@+id/label_device_power"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/textView10"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView10"
+                        android:text="Неизвестно"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="Настройки"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_mute_onclick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView9"
+                    android:text="Клик при входящем звонке выключает звук" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_reject_on_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_mute_onclick"
+                    android:text="Долгий клик при входящем звонке сбрасывает вызов" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_locator_on_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_reject_on_long"
+                    android:text="Долгий клик - поиск телефона" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_deskclock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_locator_on_long"
+                    android:checked="false"
+                    android:text="Вибрировать когда звонит будильник (работает только с Android DeskClock)" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="Оповещения от приложений"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_vk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView"
+                    android:text="ВКонтакте" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_notice_vk"
+                    android:text="Facebook" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_notice_facebook"
+                    android:text="Twitter" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_whatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_notice_twitter"
+                    android:text="Whatsapp" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_viber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_notice_whatsapp"
+                    android:text="Viber" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_telegram"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView"
+                    android:layout_centerHorizontal="true"
+                    android:text="Telegram" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_skype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/cbx_notice_telegram"
+                    android:layout_below="@+id/cbx_notice_telegram"
+                    android:text="Skype" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_hangouts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/cbx_notice_twitter"
+                    android:layout_alignBottom="@+id/cbx_notice_twitter"
+                    android:layout_alignStart="@+id/cbx_notice_skype"
+                    android:text="Hangouts" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/cbx_notice_hangouts"
+                    android:layout_below="@+id/cbx_notice_hangouts"
+                    android:text="SMS/MMS" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/cbx_notice_viber"
+                    android:layout_alignBottom="@+id/cbx_notice_viber"
+                    android:layout_alignStart="@+id/cbx_notice_sms"
+                    android:text="Входящий вызов" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_gmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/cbx_notice_skype"
+                    android:layout_toEndOf="@+id/cbx_notice_sms"
+                    android:text="Gmail/Email" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
