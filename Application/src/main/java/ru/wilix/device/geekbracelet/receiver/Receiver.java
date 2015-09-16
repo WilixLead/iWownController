@@ -10,7 +10,7 @@ import android.media.MediaPlayer;
 import ru.wilix.device.geekbracelet.App;
 import ru.wilix.device.geekbracelet.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
-import ru.wilix.device.geekbracelet.GoogleFitSensor;
+import ru.wilix.device.geekbracelet.GoogleFitConnector;
 import ru.wilix.device.geekbracelet.i5.Constants;
 import ru.wilix.device.geekbracelet.model.Sport;
 
@@ -34,8 +34,7 @@ public class Receiver extends BroadcastReceiver {
                 break;
             case BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED:
                 NotificationMonitor.Notif nf = (NotificationMonitor.Notif)intent.getSerializableExtra("data");
-                //BLEService.getSelf().getDevice().sendAlert(nf.shortName + ":" + nf.fromName, Constants.ALERT_TYPE_MESSAGE);
-                BLEService.getSelf().getDevice().sendAlert(nf.fromName, Constants.ALERT_TYPE_MESSAGE);
+                BLEService.getSelf().getDevice().sendAlert(nf.fromName, nf.getDeviceNoticeType());
                 break;
             case BroadcastConstants.ACTION_INCOMING_CALL:
                 hasIncomingCall = true;
@@ -86,7 +85,18 @@ public class Receiver extends BroadcastReceiver {
 
             case BroadcastConstants.ACTION_SPORT_DATA:
                 Sport sport = (Sport)intent.getSerializableExtra("data");
-                GoogleFitSensor.publishData(sport);
+                if( App.sPref.getBoolean("fit_connected", false) )
+                    GoogleFitConnector.publish(sport);
+                break;
+
+            case BroadcastConstants.ACTION_CONNECT_TO_GFIT:
+                if( App.sPref.getBoolean("fit_connected", false) )
+                    if( BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null )
+                        BLEService.getSelf().getDevice().subscribeForSportUpdates();
+                break;
+            case BroadcastConstants.ACTION_GATT_CONNECTED:
+                if( App.sPref.getBoolean("fit_connected", false) )
+                    BLEService.getSelf().getDevice().subscribeForSportUpdates();
                 break;
         }
     }

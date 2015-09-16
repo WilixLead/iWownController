@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ru.wilix.device.geekbracelet.i5.Utils;
@@ -108,7 +109,10 @@ public class Sport implements Serializable {
     public long getTimestamp(){
         if( this.year == 0 )
             return new GregorianCalendar().getTimeInMillis();
-        return new GregorianCalendar(this.year, this.month, this.day, this.hour, this.minute).getTimeInMillis();
+        long tmp = new GregorianCalendar(this.year, this.month, this.day, this.hour, this.minute).getTimeInMillis();
+        if( tmp <= 0 )
+            return new Date().getTime();
+        return tmp;
     }
 
     public String toString(){

@@ -9,15 +9,15 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import ru.wilix.device.geekbracelet.BroadcastConstants;
+import ru.wilix.device.geekbracelet.i5.Constants;
+import ru.wilix.device.geekbracelet.model.AppNotification;
 
 /**
  * Created by Aloyan Dmitry on 30.08.2015
  */
 public class NotificationMonitor extends NotificationListenerService {
-    public static ArrayList<String> availablePackages = new ArrayList<>();
     public static StatusBarNotification lastSbn;
 
     @Override
@@ -28,13 +28,12 @@ public class NotificationMonitor extends NotificationListenerService {
             @Override
             public void run() {
                 try {
-                    for (String pkg : availablePackages) {
-                        if (lastSbn.getPackageName().indexOf(pkg) != -1) {
-                            Intent intent = new Intent(BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED);
-                            intent.putExtra("data", Notif.fromSbn(lastSbn));
-                            sendBroadcast(intent);
-                            return;
-                        }
+                    int canNotice = AppNotification.canNotice(lastSbn.getPackageName());
+                    if(canNotice > 0){
+                        Intent intent = new Intent(BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED);
+                        intent.putExtra("data", Notif.fromSbn(lastSbn, canNotice));
+                        sendBroadcast(intent);
+                        return;
                     }
                 }catch (Exception e){ e.printStackTrace(); }
                 Log.i("NOTIFICATION", "Package: " + lastSbn.getPackageName() + " skipped");
@@ -53,11 +52,11 @@ public class NotificationMonitor extends NotificationListenerService {
 
     public static class Notif implements Serializable{
         public String appName = "";
-        public String shortName = "";
         public String fromName = "";
         public String msgText = "";
+        public Integer noticeType = 0;
 
-        public static Notif fromSbn(StatusBarNotification sbn){
+        public static Notif fromSbn(StatusBarNotification sbn, int notice_type){
             Notif nf = new Notif();
             //String ticker = "";
 
@@ -65,7 +64,6 @@ public class NotificationMonitor extends NotificationListenerService {
                 return nf;
 
             Log.i("Package", sbn.getPackageName());
-            nf.fillAppName(sbn.getPackageName());
 
             if( sbn.getNotification() == null )
                 return nf;
@@ -76,9 +74,9 @@ public class NotificationMonitor extends NotificationListenerService {
             if( sbn.getNotification().extras != null ) {
                 Bundle extras = sbn.getNotification().extras;
                 if( extras.containsKey("android.title") )
-                    nf.fromName = extras.getString(Notification.EXTRA_TITLE);
-//                if( extras.containsKey("android.text") )
-//                    nf.msgText = extras.getString("android.text").toString();
+                    nf.fromName = "" + extras.getString(Notification.EXTRA_TITLE);
+                if( extras.containsKey("android.text") )
+                    nf.msgText = "" + extras.getString("android.text").toString();
             }
 
 //            Log.i("Ticker", ticker);
@@ -86,42 +84,17 @@ public class NotificationMonitor extends NotificationListenerService {
                 Log.i("Title", nf.fromName);
 //            if( nf.msgText != null )
 //                Log.i("Text", nf.msgText);
+            nf.noticeType = notice_type;
 
             return nf;
         }
 
-        public void fillAppName(String packageName){
-            if( packageName == null || packageName.length() <= 0 )
-                return ;
-
-            switch (packageName){
-                case "com.vkontakte.android":
-                    this.appName = "VK";
-                    this.shortName = "VK";
-                    break;
-                case "org.telegram.messenger":
-                    this.appName = "Telegram";
-                    this.shortName = "Tm";
-                    break;
-                case "com.google.android.talk":
-                    this.appName = "Hangouts";
-                    this.shortName = "Hs";
-                    break;
-                case "com.whatsapp":
-                    this.appName = "Whatsapp";
-                    this.shortName = "Wp";
-                    break;
-                case "com.google.android.gm":
-                    this.appName = "Gmail";
-                    this.shortName = "Gm";
-                    break;
-                case "com.viber.voip":
-                    this.appName = "Viber";
-                    this.shortName = "Vb";
-                default:
-                    this.appName = packageName.substring(packageName.lastIndexOf("."));
-                    this.shortName = packageName.substring(0, 2);
-                    break;
+        public Integer getDeviceNoticeType(){
+            switch (this.noticeType){
+                case 1:return Constants.ALERT_TYPE_MESSAGE;
+                case 2:return Constants.ALERT_TYPE_CLOUD;
+                case 3:return Constants.ALERT_TYPE_ERROR;
+                default:return Constants.ALERT_TYPE_MESSAGE;
             }
         }
 
@@ -130,12 +103,6 @@ public class NotificationMonitor extends NotificationListenerService {
         }
         public String getAppName(){
             return this.appName;
-        }
-        public void setShortName(String value){
-            this.shortName = value;
-        }
-        public String getShortName(){
-            return this.shortName;
         }
         public void setFromName(String value){
             this.fromName = value;
@@ -148,6 +115,12 @@ public class NotificationMonitor extends NotificationListenerService {
         }
         public String getMsgText(){
             return this.msgText;
+        }
+        public void setNoticeType(Integer type){
+            this.noticeType = type;
+        }
+        public Integer getNoticeType(){
+            return this.noticeType;
         }
     }
 }

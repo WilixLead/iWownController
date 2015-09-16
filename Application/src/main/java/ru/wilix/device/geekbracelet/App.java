@@ -3,6 +3,7 @@ package ru.wilix.device.geekbracelet;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,14 +37,20 @@ public class App extends Application {
             Intent gattServiceIntent = new Intent(this, BLEService.class);
             startService(gattServiceIntent);
 
+            PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
+                    new Intent(this, MainActivity.class), 0);
+
             Notification notification = new NotificationCompat.Builder(this)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                     .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentText("iWown Controller")
-                    .setContentTitle("iWown Controller")
-                    .setTicker("iWown Controller")
+                    .setContentText("WiliX Controller")
+                    .setContentTitle("WiliX Controller")
+                    .setTicker("WiliX Controller")
+                    .setPriority(Notification.PRIORITY_LOW)
                     .setAutoCancel(false)
+                    .setContentIntent(pi)
                     .build();
+
             notification.flags |= Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_INSISTENT;// Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT |
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(0, notification);
             loadProperties();
@@ -55,31 +62,7 @@ public class App extends Application {
 
     public static void loadProperties(){
         SharedPreferences sp = App.sPref;
-
-        NotificationMonitor.availablePackages.clear();
-        if( sp.getBoolean("cbx_notice_vk", false) )
-            NotificationMonitor.availablePackages.add("com.vkontakte.android");
-        if( sp.getBoolean("cbx_notice_facebook", false) )
-            NotificationMonitor.availablePackages.add("facebook");
-        if( sp.getBoolean("cbx_notice_twitter", false) )
-            NotificationMonitor.availablePackages.add("twitter");
-        if( sp.getBoolean("cbx_notice_whatsapp", false) )
-            NotificationMonitor.availablePackages.add("com.whatsapp");
-        if( sp.getBoolean("cbx_notice_viber", false) )
-            NotificationMonitor.availablePackages.add("com.viber.voip");
-        if( sp.getBoolean("cbx_notice_telegram", false) )
-            NotificationMonitor.availablePackages.add("org.telegram.messenger");
-        if( sp.getBoolean("cbx_notice_skype", false) )
-            NotificationMonitor.availablePackages.add("skype");
-        if( sp.getBoolean("cbx_notice_hangouts", false) )
-            NotificationMonitor.availablePackages.add("com.google.android.talk");
-        if( sp.getBoolean("cbx_notice_sms", false) )
-            NotificationMonitor.availablePackages.add("sms");
-        if( sp.getBoolean("cbx_notice_call", false) )
-            NotificationMonitor.availablePackages.add("com.vkontakte.android");
-        if( sp.getBoolean("cbx_notice_gmail", false) ) {
-            NotificationMonitor.availablePackages.add("com.google.android.gm");
-            NotificationMonitor.availablePackages.add("mail");
-        }
+        if( sp.getBoolean("fit_connected", false) )
+            GoogleFitConnector.connect(App.mContext);
     }
 }

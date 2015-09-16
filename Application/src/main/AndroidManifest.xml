@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.wilix.device.geekbracelet"
-    android:versionCode="4"
-    android:versionName="0.4" >
+    android:versionCode="5"
+    android:versionName="0.5" >
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -34,6 +34,8 @@
                 <action android:name="ru.wilix.device.geekbracelet.ACTION_SELFIE" />
                 <action android:name="ru.wilix.device.geekbracelet.ACTION_PLAYPAUSE" />
                 <action android:name="ru.wilix.device.geekbracelet.ACTION_SPORT_DATA" />
+                <action android:name="ru.wilix.device.geekbracelet.ACTION_CONNECT_TO_GFIT" />
+                <action android:name="ru.wilix.device.geekbracelet.ACTION_GATT_CONNECTED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".receiver.CallReceiver" >
@@ -74,20 +76,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        <service
-            android:name=".GoogleFitSensor"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":sensor" >
-            <intent-filter>
-                <action android:name="com.google.android.gms.fitness.service.FitnessSensorService" />
-                <!-- include at least one mimeType filter for the supported data types -->
-                <data android:mimeType="vnd.google.fitness.data_type/com.google.step_count.delta" />
-                <data android:mimeType="vnd.google.fitness.data_type/com.google.calories.expended" />
-                <data android:mimeType="vnd.google.fitness.data_type/com.google.distance.delta" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".DeviceSettingsActivity"
             android:label="@string/title_activity_device_settings" >

@@ -1,26 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ble_not_supported">BLE is not supported</string>
-    <string name="label_data">Data:</string>
-    <string name="label_device_address">Device address:</string>
-    <string name="label_state">State:</string>
-    <string name="no_data">No data</string>
-    <string name="connected">Connected</string>
-    <string name="disconnected">Disconnected</string>
-    <string name="title_devices">BLE Device Scan</string>
-    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <!-- BLE DISCOVER -->
+    <string name="ble_not_supported">Bluetooth LE не поддерживается</string>
+    <string name="label_data" translatable="false">Данные:</string>
+    <string name="label_device_address" translatable="false">Device address:</string>
+    <string name="label_state" translatable="false">State:</string>
+    <string name="no_data" translatable="false">No data</string>
+    <string name="connected">Подключено</string>
+    <string name="disconnected">Отключено</string>
+    <string name="title_devices">Поиск устройства</string>
+    <string name="error_bluetooth_not_supported">Bluetooth не поддерживается</string>
 
-    <string name="unknown_device">Unknown device</string>
-    <string name="unknown_characteristic">Unknown characteristic</string>
-    <string name="unknown_service">Unknown service</string>
+    <string name="unknown_device" translatable="false">Unknown device</string>
+    <string name="unknown_characteristic" translatable="false">Unknown characteristic</string>
+    <string name="unknown_service" translatable="false">Unknown service</string>
+
+    <!-- Main Activity -->
+    <string name="label_device">Устройство</string>
+    <string name="label_device_model">Модель:</string>
+    <string name="label_device_ws">Прошивка:</string>
+    <string name="label_device_time">Время устройства:</string>
+    <string name="label_device_power">Уровень заряда:</string>
+
+    <string name="label_connect">Подключиться</string>
+    <string name="label_unknown">Неизвестно</string>
+    <string name="label_settings">Настройки</string>
+
+    <string name="checkbox_click_to_mute">Клик при входящем звонке выключает звук</string>
+    <string name="checkbox_long_click_reject_call">Долгий клик при входящем звонке сбрасывает вызов</string>
+    <string name="checkbox_long_click_locator">Долгий клик - поиск телефона</string>
+    <string name="checkbox_use_deskclock">Вибрировать когда звонит будильник (работает только с Android DeskClock)</string>
+
+    <string name="device_not_connected">Не подключено</string>
+    <string name="google_fit_connected">Google Fit подключен, данные выгружаются в него</string>
+    <string name="google_fit_not_connected">Неудалось подключиться к Google Fit</string>
+    <string name="connecting_to_fit">Подключение к Google Fit</string>
+    <string name="connect_to_fit">Подключиться к Google Fit</string>
+    <string name="reconnect_to_fit">Переподключиться к Google Fit</string>
 
     <!-- Menu items -->
-    <string name="menu_connect">Connect</string>
-    <string name="menu_disconnect">Disconnect</string>
-    <string name="menu_scan">Scan</string>
-    <string name="menu_stop">Stop</string>
+    <string name="menu_connect" translatable="false">Connect</string>
+    <string name="menu_disconnect" translatable="false">Disconnect</string>
+    <string name="menu_scan">Искать</string>
+    <string name="menu_stop">Остановить</string>
 
     <!-- Device Settings -->
     <string name="device_settings_device_not_connected">Устройство не подключено</string>
     <string name="device_settings_wait_device_alert">Получение данных от устройства</string>
+    <string name="dialog_warning">Внимание</string>
+    <string name="pref_group_body">Настройка пользователя</string>
+    <string name="pref_group_device">Настройка устройства</string>
+
+    <!-- Device Settings -->
+    <string name="title_activity_device_settings">Настройки устройства</string>
+
+    <string name="pref_device_body_goal">Ваша цель</string>
+    <string name="pref_device_body_weight">Ваш вес</string>
+    <string name="pref_device_body_height">Ваш рост</string>
+    <string name="pref_device_body_age">Ваш возраст</string>
+    <string name="pref_device_body_gender">Указать пол</string>
+    <string-array name="pref_device_body_gender_titles">
+        <item>Мужик</item>
+        <item>Женщина</item>
+    </string-array>
+    <string-array name="pref_device_body_gender_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string name="pref_device_gesture">Разрешить жесты</string>
+    <string name="pref_device_gesture_desc">Показывать время когда Вы смотрите на браслет как на часы</string>
+
+    <string name="pref_device_auto_sleep">Автосон</string>
+    <string name="pref_device_light">Мигать синим светодиодом</string>
+    <string name="pref_device_use24hours">Время в 12 формате</string>
+    <string name="pref_device_english_units">Использовать английскую систему</string>
+
+    <string name="pref_device_ble">Включить BLE</string>
+    <string name="pref_device_ble_desc">Неизвестный параметр. Использовать на свой страх и риск</string>
+
+    <string name="choise_notice_type">Тип значка</string>
+    <string name="notice_type_dont_notice">Не уведомлять</string>
+    <string name="notice_type_message">Конвертик</string>
+    <string name="notice_type_cloud">Облачка</string>
+    <string name="notice_type_error">Ошибка</string>
 </resources>

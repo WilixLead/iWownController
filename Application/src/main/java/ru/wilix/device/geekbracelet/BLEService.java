@@ -52,10 +52,6 @@ public class BLEService extends Service {
     private Device device;
     private BluetoothGatt mBluetoothGatt;
 
-    public final static String ACTION_GATT_CONNECTED = "ru.wilix.device.geekbracelet.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED = "ru.wilix.device.geekbracelet.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED = "ru.wilix.device.geekbracelet.ACTION_GATT_SERVICES_DISCOVERED";
-
     public int mConnectionState = STATE_DISCONNECTED;
     public static final int STATE_DISCONNECTED = 0;
     public static final int STATE_CONNECTING = 1;
@@ -121,7 +117,7 @@ public class BLEService extends Service {
      *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      *         callback.
      */
-    public boolean connect(final String address, boolean forseConnect) {
+    public boolean connect(final String address, boolean forceConnect) {
         if (mBluetoothAdapter == null || address == null ||
                 (App.sPref.getString("DEVICE_ADDR", "").length() <= 0) && address.length() <= 0 ) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
@@ -129,7 +125,7 @@ public class BLEService extends Service {
         }
 
         // Previously connected device.  Try to reconnect.
-        if ( !forseConnect && App.sPref.getString("DEVICE_ADDR", "").length() > 0 &&
+        if ( !forceConnect && App.sPref.getString("DEVICE_ADDR", "").length() > 0 &&
                 address.equals(App.sPref.getString("DEVICE_ADDR", "")) && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             //this.autoReconnectOnTimeout();
@@ -142,6 +138,9 @@ public class BLEService extends Service {
                 return false;
             }
         }
+
+        if( forceConnect && mBluetoothGatt != null )
+            disconnect();
 
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         if (device == null) {
@@ -213,22 +212,6 @@ public class BLEService extends Service {
         return true;
     }
 
-    public void autoReconnectOnTimeout(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                    if ( BLEService.getSelf().mConnectionState != STATE_CONNECTED ) {
-                        if ( BLEService.getSelf().mConnectionState == STATE_CONNECTING )
-                            BLEService.getSelf().disconnect();
-                        BLEService.getSelf().connect(App.sPref.getString("DEVICE_ADDR", ""), true);
-                    }
-                }catch (Exception e){}
-            }
-        }).start();
-    }
-
     boolean alreadyChecking = false;
 
     public void checkConnection(){
@@ -251,6 +234,7 @@ public class BLEService extends Service {
                                 return;
                             }
                             BLEService.getSelf().getDevice().askPower();
+                            BLEService.getSelf().getDevice().askDailyData();
                         }
                     }
                     checkConnection();

@@ -1,22 +1,21 @@
 package ru.wilix.device.geekbracelet;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class DeviceSettingsActivity extends PreferenceActivity {
+public class DeviceSettingsActivity extends Activity {
     ProgressDialog dialog;
     IntentFilter inFilter;
 
@@ -28,30 +27,6 @@ public class DeviceSettingsActivity extends PreferenceActivity {
             finish();
             return;
         }
-
-        inFilter = new IntentFilter();
-        inFilter.addAction(BroadcastConstants.ACTION_DEVICE_CONF_DATA);
-        inFilter.addAction(BroadcastConstants.ACTION_BLE_DATA);
-        inFilter.addAction(BroadcastConstants.ACTION_USER_BODY_DATA);
-
-        dialog = new ProgressDialog(this);
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.setMessage(getResources().getString(R.string.device_settings_wait_device_alert));
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BLEService.getSelf().getDevice().askBle();
-                    Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askConfig();
-                    Thread.sleep(500);
-                    BLEService.getSelf().getDevice().askUserParams();
-                }catch (Exception e){}
-            }
-        }).start();
-        dialog.show();
     }
 
     private int packetIterator = 0;
@@ -68,11 +43,11 @@ public class DeviceSettingsActivity extends PreferenceActivity {
                 case BroadcastConstants.ACTION_USER_BODY_DATA:
                     HashMap<String, Integer> userData = (HashMap<String, Integer>)intent.getSerializableExtra("data");
 
-                    ed.putInt("dev_conf_goal", userData.get("goal_high"));
-                    ed.putInt("dev_conf_weight", userData.get("weight"));
-                    ed.putInt("dev_conf_height", userData.get("height"));
-                    ed.putInt("dev_conf_age", userData.get("age"));
-                    ed.putInt("dev_conf_gender", userData.get("gender"));
+                    ed.putString("dev_conf_goal", Integer.toString(userData.get("goal_high")));
+                    ed.putString("dev_conf_weight", Integer.toString(userData.get("weight")));
+                    ed.putString("dev_conf_height", Integer.toString(userData.get("height")));
+                    ed.putString("dev_conf_age", Integer.toString(userData.get("age")));
+                    ed.putString("dev_conf_gender", Integer.toString(userData.get("gender")));
                     break;
                 case BroadcastConstants.ACTION_DEVICE_CONF_DATA:
                     HashMap<String, Integer> confData = (HashMap<String, Integer>)intent.getSerializableExtra("data");
@@ -86,8 +61,13 @@ public class DeviceSettingsActivity extends PreferenceActivity {
             }
             ed.apply();
             if( packetIterator >= 3 ){
-                if( dialog != null && dialog.isShowing() )
+                if( dialog != null && dialog.isShowing() ) {
                     dialog.dismiss();
+                    PreferenceManager.setDefaultValues(DeviceSettingsActivity.this, R.xml.pref_general, true);
+                    getFragmentManager().beginTransaction()
+                            .replace(android.R.id.content, new prefGeneral())
+                            .commit();
+                }
             }
         }
     };
@@ -95,6 +75,37 @@ public class DeviceSettingsActivity extends PreferenceActivity {
     @Override
     public void onResume(){
         super.onResume();
+
+        inFilter = new IntentFilter();
+        inFilter.addAction(BroadcastConstants.ACTION_DEVICE_CONF_DATA);
+        inFilter.addAction(BroadcastConstants.ACTION_BLE_DATA);
+        inFilter.addAction(BroadcastConstants.ACTION_USER_BODY_DATA);
+
+        dialog = new ProgressDialog(this);
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setMessage(getResources().getString(R.string.device_settings_wait_device_alert));
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BLEService.getSelf().getDevice().askBle();
+                    Thread.sleep(500);
+                    BLEService.getSelf().getDevice().askConfig();
+                    Thread.sleep(500);
+                    BLEService.getSelf().getDevice().askUserParams();
+                }catch (Exception e){}
+            }
+        }).start();
+        dialog.show();
+
         registerReceiver(resultReceiver, inFilter);
     }
 
@@ -104,71 +115,40 @@ public class DeviceSettingsActivity extends PreferenceActivity {
         unregisterReceiver(resultReceiver);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean onIsMultiPane() {
-        return isXLargeTablet(this);
-    }
+    public void onDestroy(){
+        super.onDestroy();
 
-    /**
-     * Helper method to determine if the device has an extra-large screen. For
-     * example, 10" tablets are extra-large.
-     */
-    private static boolean isXLargeTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
+        if( BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null )
+            return;
 
-    /**
-     * A preference value change listener that updates the preference's summary
-     * to reflect its new value.
-     */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int goal_high = Integer.parseInt(App.sPref.getString("dev_conf_goal", "1000"));
+                int weight = Integer.parseInt(App.sPref.getString("dev_conf_weight", "70"));
+                int height = Integer.parseInt(App.sPref.getString("dev_conf_height", "180"));
+                int age = Integer.parseInt(App.sPref.getString("dev_conf_age", "26"));
+                int gender = Integer.parseInt(App.sPref.getString("dev_conf_gender", "0"));
+                BLEService.getSelf().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
 
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
+                boolean light = App.sPref.getBoolean("dev_conf_light", false);
+                boolean gesture = App.sPref.getBoolean("dev_conf_gesture", false);
+                boolean englishunits = App.sPref.getBoolean("dev_conf_englishunits", false);
+                boolean use24hours = App.sPref.getBoolean("dev_conf_use24hours", false);
+                boolean autosleep = App.sPref.getBoolean("dev_conf_autosleep", false);
+                BLEService.getSelf().getDevice().setConfig(light, gesture, englishunits,
+                        use24hours, autosleep);
 
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                preference.setSummary(stringValue);
+                BLEService.getSelf().getDevice().setBle(App.sPref.getBoolean("dev_conf_ble", false));
             }
-            return true;
+        }).start();
+    }
+
+    public static class prefGeneral extends PreferenceFragment {
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_general);
         }
-    };
-
-    /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
-     * preference title) is updated to reflect the value. The summary is also
-     * immediately updated upon calling this method. The exact display format is
-     * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
-     */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
     }
 }

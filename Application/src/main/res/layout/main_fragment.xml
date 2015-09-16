@@ -1,0 +1,205 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="154dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/label_device"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/connectBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_alignStart="@+id/label_device_sw"
+                    android:layout_below="@+id/textView4"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/label_connect"
+                    android:textSize="12dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/label_device_model"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8" />
+
+                    <TextView
+                        android:id="@+id/label_device_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView2"
+                        android:text="@string/label_unknown"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/label_device_model"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8"
+                        android:text="@string/label_device_ws" />
+
+                    <TextView
+                        android:id="@+id/label_device_sw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_device_model"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView3"
+                        android:text="@string/label_unknown"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView3"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8"
+                        android:text="@string/label_device_time" />
+
+                    <TextView
+                        android:id="@+id/label_device_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_device_sw"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView7"
+                        android:text="@string/label_unknown"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView7"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#a8a8a8"
+                        android:text="@string/label_device_power" />
+
+                    <TextView
+                        android:id="@+id/label_device_power"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/textView10"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/textView10"
+                        android:text="@string/label_unknown"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/label_settings"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_mute_onclick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView9"
+                    android:text="@string/checkbox_click_to_mute" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_reject_on_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_mute_onclick"
+                    android:text="@string/checkbox_long_click_reject_call" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_locator_on_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_reject_on_long"
+                    android:text="@string/checkbox_long_click_locator" />
+
+                <CheckBox
+                    android:id="@+id/cbx_notice_deskclock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_action_locator_on_long"
+                    android:checked="false"
+                    android:text="@string/checkbox_use_deskclock" />
+
+            </RelativeLayout>
+            <Button
+                android:id="@+id/show_applist_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Выбрать приложения для уведомления"
+                android:layout_marginTop="15dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_device_settings"
+        android:id="@+id/settingsBtn"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/connect_to_fit"
+        android:id="@+id/connectToFitBtn"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

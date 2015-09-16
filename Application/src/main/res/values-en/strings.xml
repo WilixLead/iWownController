@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GeekBracelet</string>
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="connected">Connected</string>
+    <string name="connecting_to_fit">Connectiong to Google Fit</string>
+    <string name="device_not_connected">Not connected</string>
+    <string name="device_settings_device_not_connected">Device not connected</string>
+    <string name="device_settings_wait_device_alert">Retriving data from device</string>
+    <string name="dialog_warning">Warning</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported</string>
+    <string name="google_fit_connected">Google Fit connected, sport data will be stored to Fit</string>
+    <string name="google_fit_not_connected">Can\'t connect to Google Fit</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+    <string name="pref_device_auto_sleep">Auto sleep</string>
+    <string name="pref_device_ble">BLE enable</string>
+    <string name="pref_device_ble_desc">Unknown parameter. Use for own risk</string>
+    <string name="pref_device_body_age">Age</string>
+    <string name="pref_device_body_gender">Gender</string>
+    <string-array name="pref_device_body_gender_titles">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="pref_device_body_gender_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="pref_device_body_goal">Goal</string>
+    <string name="pref_device_body_height">Your height</string>
+    <string name="pref_device_body_weight">Your weight</string>
+    <string name="pref_device_english_units">Use English units</string>
+    <string name="pref_device_gesture">Unable gestures</string>
+    <string name="pref_device_gesture_desc">Show time when you try to look at watch</string>
+    <string name="pref_device_light">Blink blue led when bluetooth connected</string>
+    <string name="pref_device_use24hours">Use 12h format</string>
+    <string name="title_activity_device_settings">Device Settings</string>
+    <string name="title_devices">Device Scan</string>
+    <string name="pref_group_body">User Personal Options</string>
+    <string name="pref_group_device">Device Settings</string>
+
+    <string name="notice_type_message">Message</string>
+    <string name="notice_type_cloud">Clouds</string>
+    <string name="notice_type_error">Error</string>
+    <string name="checkbox_click_to_mute">Click on call for mute ringer</string>
+    <string name="checkbox_long_click_locator">Long click for search phone</string>
+    <string name="checkbox_long_click_reject_call">Long click on call for reject</string>
+    <string name="checkbox_use_deskclock">Vibrate when alarm ring (use only with Android DeskClock)</string>
+    <string name="choise_notice_type">Choise notification icon</string>
+    <string name="connect_to_fit">Connect to Google Fit</string>
+    <string name="label_connect">Connect</string>
+    <string name="label_device">Device</string>
+    <string name="label_device_model">Model:</string>
+    <string name="label_device_power">Power level:</string>
+    <string name="label_device_time">Device time:</string>
+    <string name="label_device_ws">Firmware:</string>
+    <string name="label_settings">Settings</string>
+    <string name="label_unknown">Unknown</string>
+    <string name="notice_type_dont_notice">Don\t notice</string>
+    <string name="reconnect_to_fit">Reconnect to Google Fit</string>
+</resources>

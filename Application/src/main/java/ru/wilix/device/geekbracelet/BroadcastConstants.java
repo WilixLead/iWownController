@@ -21,4 +21,10 @@ public class BroadcastConstants {
     public static final String ACTION_BLE_DATA = "ru.wilix.device.geekbracelet.ACTION_BLE_DATA";
     public static final String ACTION_USER_BODY_DATA = "ru.wilix.device.geekbracelet.ACTION_USER_BODY_DATA";
     public static final String ACTION_DEVICE_CONF_DATA = "ru.wilix.device.geekbracelet.ACTION_DEVICE_CONF_DATA";
+
+    public static final String ACTION_CONNECT_TO_GFIT = "ru.wilix.device.geekbracelet.ACTION_CONNECT_TO_GFIT";
+
+    public final static String ACTION_GATT_CONNECTED = "ru.wilix.device.geekbracelet.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "ru.wilix.device.geekbracelet.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_SERVICES_DISCOVERED = "ru.wilix.device.geekbracelet.ACTION_GATT_SERVICES_DISCOVERED";
 }

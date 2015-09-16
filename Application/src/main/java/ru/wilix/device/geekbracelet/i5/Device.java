@@ -2,6 +2,7 @@ package ru.wilix.device.geekbracelet.i5;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.Log;
 
@@ -16,7 +17,6 @@ import java.util.UUID;
 import ru.wilix.device.geekbracelet.App;
 import ru.wilix.device.geekbracelet.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
-import ru.wilix.device.geekbracelet.GoogleFitSensor;
 import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 import ru.wilix.device.geekbracelet.model.Sport;
@@ -29,6 +29,7 @@ import ru.wilix.device.geekbracelet.model.Sport;
 public class Device {
     private static final String TAG = "Device_iWown_i5";
     public Communication comm;
+    public DeviceInfo deviceInfo;
 
     public Device(BLEService bleService){
         this.comm = new Communication(bleService, this);
@@ -113,7 +114,10 @@ public class Device {
         GregorianCalendar date = new GregorianCalendar();
         ArrayList<Byte> data = new ArrayList<>();
         data.add( ((byte)(date.get(Calendar.YEAR) - 2000)) );
-        data.add( ((byte)(date.get(Calendar.MONTH) - 1)) );
+        if( App.sPref.getString("device_model", "i5").indexOf("+") > -1 )
+            data.add( ((byte)(date.get(Calendar.MONTH))) );
+        else
+            data.add( ((byte)(date.get(Calendar.MONTH) - 1)) );
         data.add( ((byte)(date.get(Calendar.DAY_OF_MONTH) - 1)) );
         data.add( ((byte)date.get(Calendar.HOUR_OF_DAY)) );
         data.add( ((byte)date.get(Calendar.MINUTE)) );
@@ -139,10 +143,10 @@ public class Device {
     /**
      * Unknown command. Call on send configuration params to device
      */
-    public void setBle(){
+    public void setBle(boolean enabled){
         ArrayList<Byte> data = new ArrayList<>();
         data.add((byte)0);
-        data.add((byte)1);
+        data.add((byte) (enabled ? 1 : 0));
         writePacket(Utils.getDataByte(true, Utils.form_Header(1, 2), data));
     }
 
@@ -166,11 +170,11 @@ public class Device {
      * @param age - age in years. Like 26 years
      * @param goal - in steps. For example 10000 steps per day
      */
-    public void sendUserParams(int height, int weight, boolean gender, int age, int goal){
+    public void setUserParams(int height, int weight, boolean gender, int age, int goal){
         ArrayList<Byte> datas = new ArrayList<>();
         datas.add((byte)height);
         datas.add((byte)weight);
-        datas.add((byte)( gender ? 0 : 1));
+        datas.add((byte)( !gender ? 0 : 1));
         datas.add((byte)age);
         int goal_low = goal % AccessibilityNodeInfoCompat.ACTION_NEXT_AT_MOVEMENT_GRANULARITY;
         int goal_high = (goal - goal_low) / AccessibilityNodeInfoCompat.ACTION_NEXT_AT_MOVEMENT_GRANULARITY;
@@ -191,7 +195,7 @@ public class Device {
      * @param use24hour - Use 24 hour time format, if false used 12 hour time
      * @param autoSleep - Enable auto sleep mode when you go to sleep
      */
-    public void sendConfig(boolean light, boolean gesture, boolean englishUnits,
+    public void setConfig(boolean light, boolean gesture, boolean englishUnits,
                              boolean use24hour, boolean autoSleep) {
         ArrayList<Byte> datas = new ArrayList();
 
@@ -239,6 +243,8 @@ public class Device {
      * @param type - Type of alert. 1 - Call type, 2 - Message type
      */
     public void sendAlert(String msg, int type){
+        if( msg == null )
+            return ;
         ArrayList<Byte> datas = new ArrayList();
         datas.add(Byte.valueOf((byte) type));
         int i = 0;
@@ -309,6 +315,13 @@ public class Device {
                         switch (this.receiveBuffer[2]){
                             case Constants.APIv1_DATA_DEVICE_INFO:
                                 DeviceInfo info = DeviceInfo.fromData(this.receiveBuffer);
+                                deviceInfo = info;
+
+                                SharedPreferences.Editor ed = App.sPref.edit();
+                                ed.putString("device_model", info.getModel());
+                                ed.putString("device_sw", info.getSwversion());
+                                ed.apply();
+
                                 Log.d(TAG, "DEVICE_INFO: " + info.toString());
                                 intent = new Intent(BroadcastConstants.ACTION_DEVICE_INFO);
                                 intent.putExtra("data", DeviceInfo.fromData(this.receiveBuffer));
@@ -366,7 +379,11 @@ public class Device {
                                 break;
                             case Constants.APIv1_DATA_DEVICE_DATE:
                                 int year = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5)) + 2000;
-                                int month = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6)) + 1;
+                                int month;
+                                if( App.sPref.getString("device_model", "i5").indexOf("+") > -1 )
+                                    month = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6));
+                                else
+                                    month = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6)) + 1;
                                 int day = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 6, 7)) + 1;
                                 int hour = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 7, 8));
                                 int minute = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 8, 9));
