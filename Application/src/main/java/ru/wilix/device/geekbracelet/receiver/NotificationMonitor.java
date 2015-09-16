@@ -76,7 +76,7 @@ public class NotificationMonitor extends NotificationListenerService {
                 if( extras.containsKey("android.title") )
                     nf.fromName = "" + extras.getString(Notification.EXTRA_TITLE);
                 if( extras.containsKey("android.text") )
-                    nf.msgText = "" + extras.getString("android.text").toString();
+                    nf.msgText = "" + extras.getString("android.text");
             }
 
 //            Log.i("Ticker", ticker);
