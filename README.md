@@ -22,7 +22,7 @@ https://play.google.com/store/apps/details?id=com.google.android.deskclock
 ## Contribute
 
 Contributions are welcome, be it feedback, bugreports, documentation, translation, research or code. Feel free to work
-on any of the open [issues](https://github.com/Freeyourgadget/Gadgetbridge/issues?q=is%3Aopen+is%3Aissue);
+on any of the open [issues](https://github.com/WilixLead/iWownController/issues?q=is%3Aopen+is%3Aissue);
 just leave a comment that you're working on one to avoid duplicated work.
 
 If you has any suggestions and comments, just send email or use GitHub.
