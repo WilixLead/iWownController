@@ -88,7 +88,8 @@
 
         <CheckBoxPreference
             android:key="dev_conf_ble"
-            android:title="@string/pref_device_ble_desc"
+            android:title="@string/pref_device_ble"
+            android:summary="@string/pref_device_ble_desc"
             android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -169,6 +169,7 @@ public class BLEService extends Service {
         }
         try {
             mBluetoothGatt.disconnect();
+            close();
         }catch (Exception e){
 
         }
@@ -223,11 +224,11 @@ public class BLEService extends Service {
                     if( alreadyChecking )
                         return;
                     alreadyChecking = true;
-                    Thread.sleep(120000);
+                    Thread.sleep(60000);
                     if( App.sPref.getString("DEVICE_ADDR", "").length() > 0 ) {
                         if( BLEService.getSelf() != null && BLEService.getSelf().getDevice() != null ){
                             // FIXME bad practice use comm object
-                            if (BLEService.getSelf().getDevice().comm.lastDataReceived - (new Date().getTime()) >= 300000 ) {
+                            if (BLEService.getSelf().getDevice().comm.lastDataReceived - (new Date().getTime()) >= 120000 ) {
                                 BLEService.getSelf().disconnect();
                                 BLEService.getSelf().connect(App.sPref.getString("DEVICE_ADDR", ""), true);
                                 checkConnection();

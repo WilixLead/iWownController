@@ -8,10 +8,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, new MainFragment())
-                .addToBackStack("main")
-                .commit();
+    public void onResume(){
+        super.onResume();
+
+        if( getFragmentManager().getBackStackEntryCount() <= 0 )
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new MainFragment())
+                    .addToBackStack("main")
+                    .commit();
     }
 }

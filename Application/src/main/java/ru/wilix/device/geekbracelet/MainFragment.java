@@ -52,16 +52,16 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 SharedPreferences.Editor ed = App.sPref.edit();
 
+                ed.putBoolean("cbx_notice_call",
+                        ((CheckBox)container.findViewById(R.id.cbx_notice_call)).isChecked());
                 ed.putBoolean("cbx_action_locator_on_long",
                         ((CheckBox)container.findViewById(R.id.cbx_action_locator_on_long)).isChecked());
                 ed.putBoolean("cbx_action_mute_onclick",
                         ((CheckBox)container.findViewById(R.id.cbx_action_mute_onclick)).isChecked());
                 ed.putBoolean("cbx_action_reject_on_long",
                         ((CheckBox)container.findViewById(R.id.cbx_action_reject_on_long)).isChecked());
-
                 ed.putBoolean("cbx_notice_deskclock",
                         ((CheckBox)container.findViewById(R.id.cbx_notice_deskclock)).isChecked());
-
                 ed.apply();
                 App.loadProperties();
             }
@@ -106,6 +106,7 @@ public class MainFragment extends Fragment {
             @Override
             public void run() {
                 SharedPreferences sp = App.sPref;
+                ((CheckBox) container.findViewById(R.id.cbx_notice_call)).setChecked(sp.getBoolean("cbx_notice_call", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_locator_on_long)).setChecked(sp.getBoolean("cbx_action_locator_on_long", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_mute_onclick)).setChecked(sp.getBoolean("cbx_action_mute_onclick", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_reject_on_long)).setChecked(sp.getBoolean("cbx_action_reject_on_long", false));
@@ -183,6 +184,11 @@ public class MainFragment extends Fragment {
         try {
             getActivity().unregisterReceiver(mGattUpdateReceiver);
         }catch (Exception e){}
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        getActivity().finish();
     }
 
     // Handles various events fired by the Service.

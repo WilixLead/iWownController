@@ -147,11 +147,19 @@
                     android:textStyle="italic" />
 
                 <CheckBox
-                    android:id="@+id/cbx_action_mute_onclick"
+                    android:id="@+id/cbx_notice_call"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textView9"
+                    android:text="@string/checkbox_notice_call" />
+
+                <CheckBox
+                    android:id="@+id/cbx_action_mute_onclick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/cbx_notice_call"
                     android:text="@string/checkbox_click_to_mute" />
 
                 <CheckBox
@@ -186,20 +194,21 @@
                 android:layout_height="wrap_content"
                 android:text="Выбрать приложения для уведомления"
                 android:layout_marginTop="15dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_activity_device_settings"
+                android:id="@+id/settingsBtn"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_to_fit"
+                android:id="@+id/connectToFitBtn"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_activity_device_settings"
-        android:id="@+id/settingsBtn"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connect_to_fit"
-        android:id="@+id/connectToFitBtn"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>

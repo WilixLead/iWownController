@@ -11,7 +11,6 @@ import ru.wilix.device.geekbracelet.App;
 import ru.wilix.device.geekbracelet.BLEService;
 import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.GoogleFitConnector;
-import ru.wilix.device.geekbracelet.i5.Constants;
 import ru.wilix.device.geekbracelet.model.Sport;
 
 /**
@@ -20,7 +19,6 @@ import ru.wilix.device.geekbracelet.model.Sport;
 public class Receiver extends BroadcastReceiver {
     private static boolean isIncomingCallMuted = false;
     private static boolean hasIncomingCall = false;
-    private static int beforeAjustVolume = 0;
 
     public void onReceive(Context context, Intent intent){
         String action = intent.getAction();
@@ -58,7 +56,6 @@ public class Receiver extends BroadcastReceiver {
                 // If one click and we have ringing, need to mute
                 if( hasIncomingCall && App.sPref.getBoolean("cbx_action_mute_onclick", false) ){
                     AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                    beforeAjustVolume = am.getStreamVolume(AudioManager.STREAM_RING);
                     am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                     CallReceiver.rejectCall(context, 1);
                     isIncomingCallMuted = true;
