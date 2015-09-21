@@ -66,6 +66,7 @@ public class MainFragment extends Fragment {
                 App.loadProperties();
             }
         };
+        ((CheckBox)container.findViewById(R.id.cbx_notice_call)).setOnClickListener(listener);
         ((CheckBox)container.findViewById(R.id.cbx_action_locator_on_long)).setOnClickListener(listener);
         ((CheckBox)container.findViewById(R.id.cbx_action_mute_onclick)).setOnClickListener(listener);
         ((CheckBox)container.findViewById(R.id.cbx_action_reject_on_long)).setOnClickListener(listener);
@@ -188,7 +189,7 @@ public class MainFragment extends Fragment {
 
     public void onDestroy(){
         super.onDestroy();
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     // Handles various events fired by the Service.

@@ -160,7 +160,6 @@ public class GoogleFitConnector {
             dataPoint.setTimestamp(sport.getTimestamp(), TimeUnit.MILLISECONDS);
             dataPoint.getValue(Field.FIELD_STEPS).setInt(sport.getSteps() - lastSport.getSteps());
             dataSet.add(dataPoint);
-            Fitness.HistoryApi.insertData(mClient, dataSet);
 
             Log.i(TAG, "Inserting the dataset in the History API");
             com.google.android.gms.common.api.Status insertStatus =
@@ -178,7 +177,6 @@ public class GoogleFitConnector {
             dataPoint.setTimestamp(sport.getTimestamp(), TimeUnit.MILLISECONDS);
             dataPoint.getValue(Field.FIELD_DISTANCE).setFloat(sport.getDistance() - lastSport.getDistance());
             dataSet.add(dataPoint);
-            Fitness.HistoryApi.insertData(mClient, dataSet);
 
             Log.i(TAG, "Inserting the dataset in the History API");
             insertStatus = Fitness.HistoryApi.insertData(mClient, dataSet).await(1, TimeUnit.MINUTES);
