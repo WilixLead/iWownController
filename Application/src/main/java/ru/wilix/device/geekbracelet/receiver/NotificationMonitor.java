@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.text.SpannableString;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -73,10 +74,10 @@ public class NotificationMonitor extends NotificationListenerService {
 //            }
             if( sbn.getNotification().extras != null ) {
                 Bundle extras = sbn.getNotification().extras;
-                if( extras.containsKey("android.title") )
-                    nf.fromName = "" + extras.getString(Notification.EXTRA_TITLE);
+                if( extras.containsKey(Notification.EXTRA_TITLE) )
+                    nf.fromName = extras.get(Notification.EXTRA_TITLE).toString();
                 if( extras.containsKey("android.text") )
-                    nf.msgText = "" + extras.getString("android.text");
+                    nf.msgText = extras.get("android.text").toString();
             }
 
 //            Log.i("Ticker", ticker);

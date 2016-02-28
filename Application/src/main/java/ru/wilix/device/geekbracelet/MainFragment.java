@@ -1,5 +1,6 @@
 package ru.wilix.device.geekbracelet;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -19,7 +22,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 
@@ -97,6 +104,10 @@ public class MainFragment extends Fragment {
             }
         });
 
+        if (Build.VERSION.SDK_INT > 19){
+            checkPermissions();
+        }
+
         if( !checkNotificationListenEnabled() ) {
             askNotificationAccess();
         }
@@ -131,16 +142,16 @@ public class MainFragment extends Fragment {
 
     private void askNotificationAccess() {
         AlertDialog alert = new AlertDialog.Builder(getActivity())
-                .setTitle("Внимание")
-                .setMessage("Для отображения уведомлений на браслете необходимо разрешить доступ к уведомлениям. Открыть настройки?")
-                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                .setTitle(getResources().getText(R.string.dialog_warning))
+                .setMessage(getResources().getText(R.string.system_notice_need_notification_access))
+                .setPositiveButton(getResources().getText(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("Отмена", null)
+                .setNegativeButton(getResources().getText(R.string.no), null)
                 .create();
         alert.show();
     }
@@ -210,7 +221,7 @@ public class MainFragment extends Fragment {
                                     .setText(BLEService.getSelf().getmBluetoothGatt().getDevice().getName());
                             break;
                         case BroadcastConstants.ACTION_GATT_DISCONNECTED:
-                            ((Button) container.findViewById(R.id.connectBtn)).setText("Не подключено");
+                            ((Button) container.findViewById(R.id.connectBtn)).setText(getResources().getText(R.string.device_not_connected));
                             break;
                         case BroadcastConstants.ACTION_GATT_SERVICES_DISCOVERED:
                             requestDeviceInfo();
@@ -226,7 +237,7 @@ public class MainFragment extends Fragment {
                         case BroadcastConstants.ACTION_DATE_DATA:
                             long timestamp = in.getLongExtra("data", 0);
                             if (timestamp <= 0)
-                                ((TextView) container.findViewById(R.id.label_device_time)).setText("Неверное время!");
+                                ((TextView) container.findViewById(R.id.label_device_time)).setText(getResources().getText(R.string.label_wrong_time));
                             else {
                                 CharSequence dt = android.text.format.DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp));
                                 ((TextView) container.findViewById(R.id.label_device_time)).setText(dt);
@@ -270,5 +281,90 @@ public class MainFragment extends Fragment {
         intentFilter.addAction(BroadcastConstants.ACTION_CONNECT_TO_GFIT);
 
         return intentFilter;
+    }
+
+    // API 23 - Marshmallow permissions
+    private void checkPermissions() {
+        boolean needGrantMessage = false;
+        List<String> permissionsNeeded = new ArrayList<>();
+
+        final List<String> permissionsList = new ArrayList<String>();
+        if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE)) {
+            needGrantMessage = true;
+        }
+//        if (!addPermission(permissionsList, Manifest.permission.MODIFY_PHONE_STATE)) {
+//            needGrantMessage = true;
+//        }
+        if (!addPermission(permissionsList, Manifest.permission.CALL_PHONE)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.PROCESS_OUTGOING_CALLS)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.MODIFY_AUDIO_SETTINGS)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.INTERNET)) {
+            needGrantMessage = true;
+        }
+        if (!addPermission(permissionsList, Manifest.permission.ACCESS_NETWORK_STATE)) {
+            needGrantMessage = true;
+        }
+
+        if (needGrantMessage) {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(getResources().getText(R.string.need_permissions_dialog))
+                .setMessage(R.string.need_permissions_dialog_text)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                                557);
+                    }
+                }).show();
+            return;
+        }
+    }
+
+    private boolean addPermission(List<String> permissionsList, String permission) {
+        if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsList.add(permission);
+            // Check for Rationale Option
+            if (!shouldShowRequestPermissionRationale(permission))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 557: {
+                boolean allGrunded = true;
+                for( int state : grantResults ) {
+                    if( state != PackageManager.PERMISSION_GRANTED ) {
+                        allGrunded = false;
+                    }
+                }
+                if ( !allGrunded ) {
+                    // Permission Denied
+                    Toast.makeText(getActivity(), R.string.need_permissions_denied, Toast.LENGTH_SHORT)
+                            .show();
+                    getActivity().finish();
+                }
+            }
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

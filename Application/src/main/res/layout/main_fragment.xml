@@ -192,7 +192,7 @@
                 android:id="@+id/show_applist_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Выбрать приложения для уведомления"
+                android:text="@string/choice_apps_for_notification"
                 android:layout_marginTop="15dp" />
 
             <Button

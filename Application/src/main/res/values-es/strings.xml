@@ -60,4 +60,22 @@
     <string name="notice_type_dont_notice">No molestar</string>
     <string name="reconnect_to_fit">Reconectar a Google Fit</string>
     <string name="checkbox_notice_call">Titra á incomaing símtal</string>
+    <string name="choice_apps_for_notification">Choice apps for receive notifications</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="label_wrong_time">Wrong time!</string>
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="no_data">No data</string>
+    <string name="no">no</string>
+    <string name="system_notice_need_notification_access">For enable retrieve notifications from your mobile to bracelet you should enable access to system notifications. Open settings?</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_service">Unknown service</string>
+    <string name="yes">yes</string>
+
+    <string name="need_permissions_dialog">Advertencia</string>
+    <string name="need_permissions_dialog_text">Debe conceder los siguientes permisos para el trabajo normal</string>
+    <string name="need_permissions_denied">Algunos Permiso denegado. Puedo \ 't trabajar</string>
 </resources>
