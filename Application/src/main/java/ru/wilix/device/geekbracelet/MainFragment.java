@@ -104,7 +104,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        if (Build.VERSION.SDK_INT > 19){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkPermissions();
         }
 
@@ -336,11 +336,14 @@ public class MainFragment extends Fragment {
     }
 
     private boolean addPermission(List<String> permissionsList, String permission) {
-        if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-            permissionsList.add(permission);
-            // Check for Rationale Option
-            if (!shouldShowRequestPermissionRationale(permission))
-                return false;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission);
+                // Check for Rationale Option
+                if (!shouldShowRequestPermissionRationale(permission))
+                    return false;
+            }
         }
         return true;
     }
