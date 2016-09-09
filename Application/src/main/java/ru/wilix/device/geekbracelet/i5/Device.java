@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -205,8 +206,21 @@ public class Device {
         datas.add(Byte.valueOf( (byte) (use24hour ? 1 : 0)));
         datas.add(Byte.valueOf( (byte) (autoSleep ? 1 : 0)));
 
-        datas.add(Byte.valueOf((byte) 0));
-        datas.add(Byte.valueOf((byte) 0));
+        if(Communication.apiVersion == 2)
+        {
+            datas.add((byte) 1);
+            datas.add((byte) 8); // Light Start Time (Whatever that means); Default
+            datas.add((byte) 20); // Light End Time (Whatever that means); Default
+
+            datas.add(Byte.valueOf((byte) 0)); // Inverse Colors
+            datas.add(Byte.valueOf((byte) 0)); // Is English
+            datas.add(Byte.valueOf((byte) 0)); // Disconnect Tip
+        }
+        else
+        {
+            datas.add(Byte.valueOf((byte) 0));
+            datas.add(Byte.valueOf((byte) 0));
+        }
 
         byte[] data = Utils.getDataByte(true, Utils.form_Header(1, 8), datas);
         writePacket(data);
@@ -246,34 +260,59 @@ public class Device {
         if( msg == null )
             return ;
         ArrayList<Byte> datas = new ArrayList();
-        datas.add(Byte.valueOf((byte) type));
-        int i = 0;
-        if( msg.length() < 6 ){
-            while( msg.length() < 6 )
-                msg += " ";
-        }else if( msg.length() >= 6 ){
-            msg = msg.substring(0, 6);
-        }
+        if(Communication.apiVersion == 2)
+        {
+            datas.add(Byte.valueOf((byte) type));
+            datas.add(Byte.valueOf((byte) -1));
 
-        while (i < msg.length()) {
-//            if (msg.charAt(i) < '@' || (msg.charAt(i) < '\u0080' && msg.charAt(i) > '`')) {
-//                char e = msg.charAt(i);
-//                datas.add(Byte.valueOf((byte) 0));
-//                for (byte valueOf : PebbleBitmap.fromString(String.valueOf(e), 8, 1).data) {
-//                    datas.add(Byte.valueOf(valueOf));
-//                }
-//            } else {
+            byte[] buffer = new byte[0];
+            try
+            {
+                buffer = msg.replaceAll("[^\u0020-\u0079]", "#").getBytes("utf-8");
+            }
+            catch(UnsupportedEncodingException ex)
+            {
+                ex.printStackTrace();
+            }
+            for(byte b : buffer)
+                datas.add(Byte.valueOf(b));
+        }
+        else
+        {
+            datas.add(Byte.valueOf((byte) type));
+            int i = 0;
+            if(msg.length() < 6)
+            {
+                while(msg.length() < 6)
+                    msg += " ";
+            }
+            else if(msg.length() >= 6)
+            {
+                msg = msg.substring(0, 6);
+            }
+
+            while(i < msg.length())
+            {
+                //            if (msg.charAt(i) < '@' || (msg.charAt(i) < '\u0080' && msg.charAt(i) > '`')) {
+                //                char e = msg.charAt(i);
+                //                datas.add(Byte.valueOf((byte) 0));
+                //                for (byte valueOf : PebbleBitmap.fromString(String.valueOf(e), 8, 1).data) {
+                //                    datas.add(Byte.valueOf(valueOf));
+                //                }
+                //            } else {
                 char c = msg.charAt(i);
                 datas.add(Byte.valueOf((byte) 1));
-                for (byte valueOf2 : PebbleBitmap.fromString(String.valueOf(c), 16, 1).data) {
+                for(byte valueOf2 : PebbleBitmap.fromString(String.valueOf(c), 16, 1).data)
+                {
                     datas.add(Byte.valueOf(valueOf2));
                 }
-//            }
-            i++;
+                //            }
+                i++;
+            }
         }
         byte[] data = Utils.getDataByte(true, Utils.form_Header(3, 1), datas);
         ArrayList<Communication.WriteDataTask> tasks = new ArrayList<>();
-        for (i = 0; i < data.length; i += 20) {
+        for (int i = 0; i < data.length; i += 20) {
             byte[] writeData;
             if (i + 20 > data.length) {
                 writeData = Arrays.copyOfRange(data, i, data.length);
@@ -292,11 +331,11 @@ public class Device {
     public void parserAPIv1(BluetoothGattCharacteristic chr){
         String uuid = chr.getUuid().toString();
         Log.i(TAG, "Parse APIv1 data. UUID:" + uuid);
-        if (Constants.BAND_CHARACTERISTIC_NEW_NOTIFY.equals(uuid)) {
+        if (Constants.BAND_CHARACTERISTIC_NEW_NOTIFY.equals(uuid) || Constants.BAND_CHARACTERISTIC_NEW_INDICATE.equals(uuid)) {
             byte[] data = chr.getValue();
             if (data != null && data.length != 0) {
                 if (this.isDataOver) {
-                    if (data[0] == 34) {
+                    if (data[0] == 34 || (Communication.apiVersion == 2 && data[0] == 35)) {
                         this.receiveBufferLength = data[3];
                         //Log.i(TAG, "Received length --->" + this.receiveBufferLength);
                         //Log.i(TAG, "Received data --->" + Utils.bytesToString(data));

@@ -65,6 +65,14 @@ public class Communication extends BluetoothGattCallback {
             }
             BluetoothGattCharacteristic notify_chr =
                 bleService.getCharacteristic(UUID.fromString(Constants.BAND_CHARACTERISTIC_NEW_NOTIFY));
+
+            //If FW version 2.x.x.x
+            if(notify_chr == null)
+            {
+                notify_chr = bleService.getCharacteristic(UUID.fromString(Constants.BAND_CHARACTERISTIC_NEW_INDICATE));
+                apiVersion = 2;
+            }
+
             gatt.setCharacteristicNotification(notify_chr, true);
 
             // Set Descriptor for receive notices
@@ -108,7 +116,8 @@ public class Communication extends BluetoothGattCallback {
 
     public void parseCharacteristic(BluetoothGattCharacteristic chr){
         lastDataReceived = new Date().getTime();
-        if( apiVersion == 1 )
+
+        if( apiVersion >= 1 )
             this.device.parserAPIv1(chr);
         else
             this.device.parserAPIv0(chr);
