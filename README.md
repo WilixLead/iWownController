@@ -1,7 +1,8 @@
 # iWownController
 Alternative application for Zeroner, for work with fitness-bracelet iWown i5, i5+, i6.
 
-This application under development and testing stage.
+This application under development and testing stage.  
+Follow me in Twitter https://twitter.com/wilixlead
 
 You can just install this app from Google Play
 https://play.google.com/store/apps/details?id=ru.wilix.device.geekbracelet
