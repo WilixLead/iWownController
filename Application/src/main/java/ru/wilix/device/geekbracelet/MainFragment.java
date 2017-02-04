@@ -310,9 +310,6 @@ public class MainFragment extends Fragment {
         if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS)) {
             needGrantMessage = true;
         }
-        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS)) {
-            needGrantMessage = true;
-        }
         if (!addPermission(permissionsList, Manifest.permission.INTERNET)) {
             needGrantMessage = true;
         }
