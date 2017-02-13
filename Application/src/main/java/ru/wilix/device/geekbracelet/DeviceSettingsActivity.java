@@ -112,43 +112,46 @@ public class DeviceSettingsActivity extends Activity {
     @Override
     public void onPause(){
         super.onPause();
+        new Saver().run();
         unregisterReceiver(resultReceiver);
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        new Saver().run();
 
         if( BLEService.getSelf() == null || BLEService.getSelf().getDevice() == null )
             return;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int goal_high = Integer.parseInt(App.sPref.getString("dev_conf_goal", "1000"));
-                int weight = Integer.parseInt(App.sPref.getString("dev_conf_weight", "70"));
-                int height = Integer.parseInt(App.sPref.getString("dev_conf_height", "180"));
-                int age = Integer.parseInt(App.sPref.getString("dev_conf_age", "26"));
-                int gender = Integer.parseInt(App.sPref.getString("dev_conf_gender", "0"));
-                BLEService.getSelf().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
-
-                boolean light = App.sPref.getBoolean("dev_conf_light", false);
-                boolean gesture = App.sPref.getBoolean("dev_conf_gesture", false);
-                boolean englishunits = App.sPref.getBoolean("dev_conf_englishunits", false);
-                boolean use24hours = App.sPref.getBoolean("dev_conf_use24hours", false);
-                boolean autosleep = App.sPref.getBoolean("dev_conf_autosleep", false);
-                BLEService.getSelf().getDevice().setConfig(light, gesture, englishunits,
-                        use24hours, autosleep);
-
-                BLEService.getSelf().getDevice().setBle(App.sPref.getBoolean("dev_conf_ble", false));
-            }
-        }).start();
     }
 
     public static class prefGeneral extends PreferenceFragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+        }
+    }
+
+    private class Saver implements Runnable {
+        @Override
+        public void run() {
+            int goal_high = Integer.parseInt(App.sPref.getString("dev_conf_goal", "1000"));
+            int weight = Integer.parseInt(App.sPref.getString("dev_conf_weight", "70"));
+            int height = Integer.parseInt(App.sPref.getString("dev_conf_height", "180"));
+            int age = Integer.parseInt(App.sPref.getString("dev_conf_age", "26"));
+            int gender = Integer.parseInt(App.sPref.getString("dev_conf_gender", "0"));
+            BLEService.getSelf().getDevice().setUserParams(height, weight, gender > 0, age, goal_high);
+
+            boolean light = App.sPref.getBoolean("dev_conf_light", false);
+            boolean gesture = App.sPref.getBoolean("dev_conf_gesture", false);
+            boolean englishunits = App.sPref.getBoolean("dev_conf_englishunits", false);
+            boolean use24hours = App.sPref.getBoolean("dev_conf_use24hours", false);
+            boolean autosleep = App.sPref.getBoolean("dev_conf_autosleep", false);
+            BLEService.getSelf().getDevice().setConfig(light, gesture, englishunits,
+                    use24hours, autosleep);
+
+            BLEService.getSelf().getDevice().setBle(App.sPref.getBoolean("dev_conf_ble", false));
         }
     }
 }
