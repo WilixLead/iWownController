@@ -21,6 +21,7 @@ import ru.wilix.device.geekbracelet.BroadcastConstants;
 import ru.wilix.device.geekbracelet.model.DeviceClockAlarm;
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
 import ru.wilix.device.geekbracelet.model.Sport;
+import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
 
 /**
  * Created by Dmitry on 29.08.2015.
@@ -266,12 +267,14 @@ public class Device {
             datas.add(Byte.valueOf((byte) -1));
 
             byte[] buffer = new byte[0];
-            try
-            {
-                buffer = msg.replaceAll("[^\u0020-\u0079]", "#").getBytes("utf-8");
-            }
-            catch(UnsupportedEncodingException ex)
-            {
+
+            try {
+                if(NotificationMonitor.settingsKeepForeign) {
+                    buffer = msg.getBytes("utf-8");
+                } else {
+                    buffer = msg.replaceAll("[^\u0020-\u0079]", "#").getBytes("utf-8");
+                }
+            } catch (UnsupportedEncodingException ex) {
                 ex.printStackTrace();
             }
             for(byte b : buffer)

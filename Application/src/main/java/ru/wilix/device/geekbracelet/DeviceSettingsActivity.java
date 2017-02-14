@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
+
 public class DeviceSettingsActivity extends Activity {
     ProgressDialog dialog;
     IntentFilter inFilter;
@@ -152,6 +154,10 @@ public class DeviceSettingsActivity extends Activity {
                     use24hours, autosleep);
 
             BLEService.getSelf().getDevice().setBle(App.sPref.getBoolean("dev_conf_ble", false));
+
+            NotificationMonitor.settingsKeepForeign = App.sPref.getBoolean("notif_foreign", false);
+            NotificationMonitor.settingsDelay = Integer.parseInt(App.sPref.getString("notif_delay", "0"));
+
         }
     }
 }

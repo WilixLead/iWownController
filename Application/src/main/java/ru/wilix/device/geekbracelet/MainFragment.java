@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.wilix.device.geekbracelet.model.DeviceInfo;
+import ru.wilix.device.geekbracelet.receiver.NotificationMonitor;
 
 /**
  * Created by Aloyan Dmitry on 16.09.2015
@@ -123,6 +124,9 @@ public class MainFragment extends Fragment {
                 ((CheckBox) container.findViewById(R.id.cbx_action_mute_onclick)).setChecked(sp.getBoolean("cbx_action_mute_onclick", false));
                 ((CheckBox) container.findViewById(R.id.cbx_action_reject_on_long)).setChecked(sp.getBoolean("cbx_action_reject_on_long", false));
                 ((CheckBox) container.findViewById(R.id.cbx_notice_deskclock)).setChecked(sp.getBoolean("cbx_notice_deskclock", false));
+
+                NotificationMonitor.settingsKeepForeign = sp.getBoolean("notif_foreign", false);
+                NotificationMonitor.settingsDelay = Integer.parseInt(App.sPref.getString("notif_delay", "0"));
             }
         });
     }

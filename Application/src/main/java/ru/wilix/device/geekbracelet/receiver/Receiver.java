@@ -32,7 +32,8 @@ public class Receiver extends BroadcastReceiver {
                 break;
             case BroadcastConstants.ACTION_NEW_NOTIFICATION_RECEIVED:
                 NotificationMonitor.Notif nf = (NotificationMonitor.Notif)intent.getSerializableExtra("data");
-                BLEService.getSelf().getDevice().sendAlert(nf.fromName, nf.getDeviceNoticeType());
+                String message = nf.getFromName() + ": " + nf.getMsgText();
+                BLEService.getSelf().getDevice().sendAlert(message, nf.getDeviceNoticeType());
                 break;
             case BroadcastConstants.ACTION_INCOMING_CALL:
                 hasIncomingCall = true;

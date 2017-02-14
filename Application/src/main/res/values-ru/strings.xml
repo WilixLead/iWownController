@@ -65,7 +65,11 @@
     <string name="pref_device_body_height">Ваш рост</string>
     <string name="pref_device_body_age">Ваш возраст</string>
     <string name="pref_device_body_gender">Указать пол</string>
-    <string-array name="pref_device_body_gender_titles">
+    <string name="pref_group_notif">Notification Settings</string>
+    <string name="pref_notif_foreign">Keep Special Characters</string>
+    <string name="pref_notif_foreign_desc">Can cause some problems in some languages or some devices.</string>
+    <string name="pref_notif_delay">Add Delay</string>
+    <string name="pref_notif_delay_desc">To ignore repeated or cleared notifications in a second</string>    <string-array name="pref_device_body_gender_titles">
         <item>Мужик</item>
         <item>Женщина</item>
     </string-array>
