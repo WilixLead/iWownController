@@ -15,12 +15,12 @@ public class Utils {
      * @return
      */
     public static long parseDateCharacteristic(BluetoothGattCharacteristic chr){
-        int year = chr.getIntValue(17, 0).intValue() + 2000;
-        int month = chr.getIntValue(17, 1).intValue() + 1;
-        int day = chr.getIntValue(17, 2).intValue() + 1;
-        int hour = chr.getIntValue(17, 3).intValue();
-        int minute = chr.getIntValue(17, 4).intValue();
-        int second = chr.getIntValue(17, 5).intValue();
+        int year = chr.getIntValue(17, 0) + 2000;
+        int month = chr.getIntValue(17, 1) + 1;
+        int day = chr.getIntValue(17, 2) + 1;
+        int hour = chr.getIntValue(17, 3);
+        int minute = chr.getIntValue(17, 4);
+        int second = chr.getIntValue(17, 5);
         return new GregorianCalendar(year, month, day, hour, minute, second).getTime().getTime() / 1000;
     }
 
@@ -54,7 +54,7 @@ public class Utils {
             commonData[3] = (byte) datas.size();
             byte[] data = new byte[datas.size()];
             for (int i = 0; i < datas.size(); i++) {
-                data[i] = ((Byte) datas.get(i)).byteValue();
+                data[i] = (Byte) datas.get(i);
             }
             return concat(commonData, data);
         }
@@ -75,8 +75,8 @@ public class Utils {
     public static String bytesToString(byte[] bytes) {
         StringBuilder stringBuilder = new StringBuilder(bytes.length);
         int length = bytes.length;
-        for (int i = 0; i < length; i++) {
-            stringBuilder.append(String.format("%02X", new Object[]{Byte.valueOf(bytes[i])}));
+        for (byte aByte : bytes) {
+            stringBuilder.append(String.format("%02X", new Object[]{Byte.valueOf(aByte)}));
         }
         return stringBuilder.toString();
     }
@@ -86,7 +86,7 @@ public class Utils {
         for (byte b : copyOfRange) {
             String i = Integer.toHexString(b & 255);
             if (i.length() == 1) {
-                i = new StringBuilder("0").append(i).toString();
+                i = "0" + i;
             }
             sb.append(i);
         }

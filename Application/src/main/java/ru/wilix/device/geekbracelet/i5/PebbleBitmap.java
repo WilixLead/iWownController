@@ -20,9 +20,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import ru.wilix.device.geekbracelet.App;
+import ru.wilix.device.geekbracelet.BuildConfig;
 
 public class PebbleBitmap {
-    public static boolean debug = false; // Use this for see how looks data in console
     public final byte[] data;
     public final UnsignedInteger flags;
     public final short height;
@@ -77,7 +77,7 @@ public class PebbleBitmap {
         ByteBuffer data = ByteBuffer.allocate(rowLengthBytes * height);
         data.order(ByteOrder.LITTLE_ENDIAN);
         StringBuffer stringBuffer;
-        StringBuffer stringBuffer1 = new StringBuffer("");
+        StringBuilder stringBuffer1 = new StringBuilder("");
         for (int y = 0; y < height; y++) {
             int[] pixels = new int[width];
             bitmap.getPixels(pixels, 0, width * 2, 0, y, width, 1);
@@ -86,24 +86,23 @@ public class PebbleBitmap {
             for (int x = 0; x < width; x++) {
                 if (pixels[x] == 0) {
                     stringBuffer.append(PIXEL_OFF);
-                    if (debug)
+                    if (BuildConfig.DEBUG)
                         stringBuffer1.append("-");
                 } else {
                     stringBuffer.append(PIXEL_ON);
-                    if (debug)
+                    if (BuildConfig.DEBUG)
                         stringBuffer1.append("#");
                 }
             }
             for (int k = 0; k < rowLengthBytes * 8; k += 8) {
-                ByteBuffer byteBuffer = data;
-                byteBuffer.put(Byte.valueOf((byte) new BigInteger(stringBuffer.substring(k, k + 8), 2).intValue()).byteValue());
+                data.put((byte) new BigInteger(stringBuffer.substring(k, k + 8), 2).intValue());
             }
-            if (debug) {
+            if (BuildConfig.DEBUG) {
                 stringBuffer1.append("\n");
                 Log.i("info", stringBuffer.toString());
             }
         }
-        if (debug)
+        if (BuildConfig.DEBUG)
             System.out.println(stringBuffer1.toString());
 
         if (!bitmap.isRecycled())

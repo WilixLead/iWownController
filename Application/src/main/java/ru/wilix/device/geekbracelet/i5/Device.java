@@ -115,7 +115,7 @@ public class Device {
         GregorianCalendar date = new GregorianCalendar();
         ArrayList<Byte> data = new ArrayList<>();
         data.add( ((byte)(date.get(Calendar.YEAR) - 2000)) );
-        if( App.sPref.getString("device_model", "i5").indexOf("+") > -1 )
+        if(App.sPref.getString("device_model", "i5").contains("+"))
             data.add( ((byte)(date.get(Calendar.MONTH))) );
         else
             data.add( ((byte)(date.get(Calendar.MONTH) - 1)) );
@@ -156,7 +156,7 @@ public class Device {
      * @param enable
      */
     public void setSelfieMode(boolean enable){
-        ArrayList<Byte> data = new ArrayList();
+        ArrayList<Byte> data = new ArrayList<>();
         data.add(enable ? (byte) 1 : (byte) 0);
         writePacket(Utils.getDataByte(true, Utils.form_Header(4, 0), data));
     }
@@ -198,13 +198,13 @@ public class Device {
      */
     public void setConfig(boolean light, boolean gesture, boolean englishUnits,
                              boolean use24hour, boolean autoSleep) {
-        ArrayList<Byte> datas = new ArrayList();
+        ArrayList<Byte> datas = new ArrayList<>();
 
-        datas.add(Byte.valueOf( (byte) (light ?  1 : 0)));
-        datas.add(Byte.valueOf( (byte) (gesture ? 1 : 0)));
-        datas.add(Byte.valueOf( (byte) (englishUnits ? 1 : 0)));
-        datas.add(Byte.valueOf( (byte) (use24hour ? 1 : 0)));
-        datas.add(Byte.valueOf( (byte) (autoSleep ? 1 : 0)));
+        datas.add((byte) (light ? 1 : 0));
+        datas.add((byte) (gesture ? 1 : 0));
+        datas.add((byte) (englishUnits ? 1 : 0));
+        datas.add((byte) (use24hour ? 1 : 0));
+        datas.add((byte) (autoSleep ? 1 : 0));
 
         if(Communication.apiVersion == 2)
         {
@@ -212,14 +212,14 @@ public class Device {
             datas.add((byte) 8); // Light Start Time (Whatever that means); Default
             datas.add((byte) 20); // Light End Time (Whatever that means); Default
 
-            datas.add(Byte.valueOf((byte) 0)); // Inverse Colors
-            datas.add(Byte.valueOf((byte) 0)); // Is English
-            datas.add(Byte.valueOf((byte) 0)); // Disconnect Tip
+            datas.add((byte) 0); // Inverse Colors
+            datas.add((byte) 0); // Is English
+            datas.add((byte) 0); // Disconnect Tip
         }
         else
         {
-            datas.add(Byte.valueOf((byte) 0));
-            datas.add(Byte.valueOf((byte) 0));
+            datas.add((byte) 0);
+            datas.add((byte) 0);
         }
 
         byte[] data = Utils.getDataByte(true, Utils.form_Header(1, 8), datas);
@@ -246,8 +246,8 @@ public class Device {
      * End vibration and call event started after sendCall command
      */
     public void sendCallEnd() {
-        ArrayList<Byte> datas = new ArrayList();
-        datas.add(Byte.valueOf((byte) 0));
+        ArrayList<Byte> datas = new ArrayList<>();
+        datas.add((byte) 0);
         writePacket(Utils.getDataByte(true, Utils.form_Header(4, 1), datas));
     }
 
@@ -259,11 +259,11 @@ public class Device {
     public void sendAlert(String msg, int type){
         if( msg == null )
             return ;
-        ArrayList<Byte> datas = new ArrayList();
+        ArrayList<Byte> datas = new ArrayList<>();
         if(Communication.apiVersion == 2)
         {
-            datas.add(Byte.valueOf((byte) type));
-            datas.add(Byte.valueOf((byte) -1));
+            datas.add((byte) type);
+            datas.add((byte) -1);
 
             byte[] buffer = new byte[0];
             try
@@ -275,11 +275,11 @@ public class Device {
                 ex.printStackTrace();
             }
             for(byte b : buffer)
-                datas.add(Byte.valueOf(b));
+                datas.add(b);
         }
         else
         {
-            datas.add(Byte.valueOf((byte) type));
+            datas.add((byte) type);
             int i = 0;
             if(msg.length() < 6)
             {
@@ -301,10 +301,10 @@ public class Device {
                 //                }
                 //            } else {
                 char c = msg.charAt(i);
-                datas.add(Byte.valueOf((byte) 1));
+                datas.add((byte) 1);
                 for(byte valueOf2 : PebbleBitmap.fromString(String.valueOf(c), 16, 1).data)
                 {
-                    datas.add(Byte.valueOf(valueOf2));
+                    datas.add(valueOf2);
                 }
                 //            }
                 i++;
@@ -419,7 +419,7 @@ public class Device {
                             case Constants.APIv1_DATA_DEVICE_DATE:
                                 int year = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 4, 5)) + 2000;
                                 int month;
-                                if( App.sPref.getString("device_model", "i5").indexOf("+") > -1 )
+                                if(App.sPref.getString("device_model", "i5").contains("+"))
                                     month = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6));
                                 else
                                     month = Utils.bytesToInt(Arrays.copyOfRange(this.receiveBuffer, 5, 6)) + 1;
