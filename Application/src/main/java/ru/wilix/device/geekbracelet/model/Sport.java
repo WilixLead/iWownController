@@ -71,31 +71,31 @@ public class Sport implements Serializable {
     public static Sport fromCharacteristic(BluetoothGattCharacteristic chr, boolean daily){
         Sport sp = new Sport();
         if( !daily ) {
-            sp.setBcc(chr.getIntValue(17, 0).intValue());
-            sp.setMinute(chr.getIntValue(17, 1).intValue());
-            sp.setHour(chr.getIntValue(17, 2).intValue());
-            sp.setDay(chr.getIntValue(17, 3).intValue() + 1);
-            sp.setMonth(chr.getIntValue(17, 4).intValue() + 1);
-            sp.setYear(chr.getIntValue(17, 5).intValue() + 2000);
-            sp.setFlag(chr.getIntValue(17, 6).intValue());
-            sp.setSteps(chr.getIntValue(18, 7).intValue());
-            sp.setDistance(((float) chr.getIntValue(18, 9).intValue()) * 0.1f);
-            sp.setCalorie(((float) chr.getIntValue(17, 11).intValue()) * 0.1f);
+            sp.setBcc(chr.getIntValue(17, 0));
+            sp.setMinute(chr.getIntValue(17, 1));
+            sp.setHour(chr.getIntValue(17, 2));
+            sp.setDay(chr.getIntValue(17, 3) + 1);
+            sp.setMonth(chr.getIntValue(17, 4) + 1);
+            sp.setYear(chr.getIntValue(17, 5) + 2000);
+            sp.setFlag(chr.getIntValue(17, 6));
+            sp.setSteps(chr.getIntValue(18, 7));
+            sp.setDistance(((float) chr.getIntValue(18, 9)) * 0.1f);
+            sp.setCalorie(((float) chr.getIntValue(17, 11)) * 0.1f);
             sp.setType(TYPE_LOCAL_SPORT);
         }else{
             if( chr.getValue().length == 12 ){
-                sp.setSteps(chr.getIntValue(20, 0).intValue());
-                sp.setDistance(((float) chr.getIntValue(20, 4).intValue()) * 0.1f);
-                sp.setCalorie(((float) chr.getIntValue(10, 8).intValue()) * 0.1f);
+                sp.setSteps(chr.getIntValue(20, 0));
+                sp.setDistance(((float) chr.getIntValue(20, 4)) * 0.1f);
+                sp.setCalorie(((float) chr.getIntValue(10, 8)) * 0.1f);
                 sp.setType(TYPE_DAILY_A);
             }else{
-                sp.setBcc(chr.getIntValue(17, 0).intValue());
-                sp.setDay(chr.getIntValue(17, 1).intValue() + 1);
-                sp.setMonth(chr.getIntValue(17, 2).intValue() + 1);
-                sp.setYear(chr.getIntValue(17, 3).intValue() + 2000);
-                sp.setSteps(chr.getIntValue(36, 4).intValue());
-                sp.setDistance(((float) chr.getIntValue(20, 8).intValue()) * 0.1f);
-                sp.setCalorie(((float) chr.getIntValue(20, 12).intValue()) * 0.1f);
+                sp.setBcc(chr.getIntValue(17, 0));
+                sp.setDay(chr.getIntValue(17, 1) + 1);
+                sp.setMonth(chr.getIntValue(17, 2) + 1);
+                sp.setYear(chr.getIntValue(17, 3) + 2000);
+                sp.setSteps(chr.getIntValue(36, 4));
+                sp.setDistance(((float) chr.getIntValue(20, 8)) * 0.1f);
+                sp.setCalorie(((float) chr.getIntValue(20, 12)) * 0.1f);
                 sp.setType(TYPE_DAILY_B);
             }
         }

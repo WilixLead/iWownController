@@ -42,6 +42,11 @@
     <string name="title_devices">Device Scan</string>
     <string name="pref_group_body">User Personal Options</string>
     <string name="pref_group_device">Device Settings</string>
+    <string name="pref_group_notif">Notification Settings</string>
+    <string name="pref_notif_foreign">Keep Special Characters</string>
+    <string name="pref_notif_foreign_desc">Can cause some problems in some languages or some devices.</string>
+    <string name="pref_notif_delay">Add Delay</string>
+    <string name="pref_notif_delay_desc">To ignore repeated or cleared notifications in a second</string>
 
     <string name="notice_type_message">Message</string>
     <string name="notice_type_cloud">Clouds</string>
